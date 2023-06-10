@@ -1,0 +1,25 @@
+/* Clases para el modo oscuro del navbar */
+.navbar-dark {
+  background-color: #0d3c68;
+}
+
+.navbar-dark .navbar-brand {
+  color: #a2c3bb;
+}
+
+.navbar-dark .navbar-brand:hover,
+.navbar-dark .navbar-brand:focus {
+  color: #a2c3bb;
+}
+
+.navbar-dark .btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.navbar-dark .btn-outline-danger:hover,
+.navbar-dark .btn-outline-danger:focus {
+  color: #ffffff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}

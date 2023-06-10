@@ -1,0 +1,40 @@
+<div class="componentes_mantenimiento">
+    <ng-container [ngSwitch]="selectedNodeName">
+        <ng-container *ngSwitchCase="'Registrar Clientes'">
+            <app-form-cliente></app-form-cliente>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Leer Clientes'">
+            <app-listar-cliente></app-listar-cliente>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Mantenimiento de Clientes'">
+            <app-mantenimiento-cliente></app-mantenimiento-cliente>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Registrar Proveedores'">
+            <app-form-proveedor></app-form-proveedor>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Leer Proveedores'">
+            <app-listar-proveedor></app-listar-proveedor>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Mantenimiento de Proveedores'">
+            <app-mantenimiento-proveedor></app-mantenimiento-proveedor>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Registrar Productos'">
+            <app-form-producto></app-form-producto>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Leer Productos'">
+            <app-listar-producto></app-listar-producto>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Mantenimiento de Productos'">
+            <app-mantenimiento-producto></app-mantenimiento-producto>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Registrar Categorias'">
+            <app-form-categoria></app-form-categoria>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Leer Categorias'">
+            <app-listar-categoria></app-listar-categoria>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Mantenimiento de Categorias'">
+            <app-mantenimiento-categoria></app-mantenimiento-categoria>
+        </ng-container>
+    </ng-container>
+</div>

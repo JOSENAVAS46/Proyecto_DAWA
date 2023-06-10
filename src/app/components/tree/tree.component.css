@@ -1,0 +1,20 @@
+.node {
+  cursor: pointer;
+}
+
+.children {
+  margin-left: 20px;
+}
+
+.container {
+  display: flex;
+}
+
+.tree {
+  font-family: Arial, sans-serif;
+  float: left;
+  width: 200px;
+  height: 100%;
+  flex-basis: 30%;
+}
+

@@ -1,0 +1,53 @@
+<div class="container">
+    <div *ngIf="factura">
+        <h2>Factura</h2>
+        <p>Número de Factura: {{ factura.numeroFactura }}</p>
+        <p>Fecha de Emisión: {{ factura.fechaEmision | date }}</p>
+        <h3>Cliente</h3>
+        <p>Nombre: {{ factura.cliente.nombre }}</p>
+        <p>Dirección: {{ factura.cliente.direccion }}</p>
+        <p>Teléfono: {{ factura.cliente.telefono }}</p>
+        <h3>Detalle de la Factura</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of factura.items">
+                    <td>{{ item.producto.nombre }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>{{ item.precioUnitario | currency }}</td>
+                    <td>{{ item.subtotal | currency }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="fw-bold">Monto Total: {{ factura.montoTotal | currency }}</p>
+    </div>
+</div>
+<div class="container">
+    <div *ngIf="!factura">
+        <h2>Facturar</h2>
+        <div class="mb-3">
+            <label for="clienteNombre" class="form-label">Nombre del Cliente:</label>
+            <input type="text" id="clienteNombre" [(ngModel)]="nombreCliente" name="clienteNombre" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="producto" class="form-label">Producto:</label>
+            <select id="producto" [(ngModel)]="productoSeleccionado" name="producto" class="form-select">
+                <option value="">Seleccionar Producto</option>
+                <option *ngFor="let producto of lstProductos" [value]="producto">{{ producto.nombre }}</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad:</label>
+            <input type="number" id="cantidad" [(ngModel)]="cantidad" name="cantidad" class="form-control">
+        </div>
+        <button type="button" class="btn btn-primary" (click)="agregarItem()">Agregar Item</button>
+        <button type="button" class="btn btn-success" (click)="generarFactura()">Generar Factura</button>
+    </div>
+</div>

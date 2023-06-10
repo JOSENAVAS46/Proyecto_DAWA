@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark navbar-expand-lg">
+    <div class="contenedor container-fluid">
+        <a class="navbar-brand mb-0 h1">Sistema de Facturación UG</a>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" routerLink="/factura">Venta</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/inventario">Inventario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/mantenimiento">Mantenimiento</a>
+                </li>
+            </ul>
+            <span class="navbar-text m-2">
+                Bienvenido /a, {{ usuarioActual.nombre + " " + usuarioActual.apellido }}
+            </span>
+            <button type="button" class="btn btn-outline-danger" (click)="onLogout()">Cerrar Sesión</button>
+        </div>
+    </div>
+</nav>

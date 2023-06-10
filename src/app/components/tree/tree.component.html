@@ -1,0 +1,13 @@
+<div class="tree" id="tree">
+    <ul>
+        <li *ngFor="let node of treeData">
+            <div class="node" id="node" (click)="toggleNode(node);">
+                {{ node.name }}
+            </div>
+            <div class="children" id="children" (click)="onNodeClick();"
+                *ngIf="node.expanded && node.children && node.children.length > 0">
+                <app-tree [treeData]="node.children"></app-tree>
+            </div>
+        </li>
+    </ul>
+</div>

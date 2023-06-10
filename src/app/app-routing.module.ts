@@ -1,10 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormClienteComponent } from './components/_cliente/form-cliente/form-cliente.component';
+import { MantenimientoComponent } from './components/mantenimiento/mantenimiento.component';
+import { FacturaComponent } from './components/factura/factura.component';
+import { InventarioComponent } from './components/inventario/inventario.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: '', redirectTo: '/factura', pathMatch: 'full' },
+  { path: 'mantenimiento', component: MantenimientoComponent },
+  { path: 'factura', component: FacturaComponent },
+  { path: 'inventario', component: InventarioComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
