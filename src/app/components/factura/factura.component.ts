@@ -11,9 +11,13 @@ import { ItemFactura } from 'src/app/models/ItemFactura';
 })
 export class FacturaComponent {
   factura: Factura | null = null;
-  nombreCliente: string = '';
+  cedulaCliente: string = '';
+  cliente: Cliente = new Cliente(0, '', '', '', '', '');
+  clienteEncontrado: boolean = false;
   productoSeleccionado: Producto | null = null;
   cantidad: number = 0;
+  codigoProducto: string = '';
+  productoEncontrado: Producto | null = null;
   lstProductos: Producto[] = [
     {
       idProducto: 1,
@@ -52,34 +56,88 @@ export class FacturaComponent {
       stock: 15,
     },
   ];
+  lstClientes: Cliente[] = [
+    {
+      idCliente: 1,
+      cedula: '0924004914',
+      nombre: 'Jose Navas',
+      direccion: 'Guasmo Sur',
+      telefono: '0963002366',
+      correoElectronico: 'jose.navasordonez@gmail.com',
+    },
+    {
+      idCliente: 2,
+      cedula: '0999999999',
+      nombre: 'Consumidor Final',
+      direccion: 'Guayaquil',
+      telefono: '0999999999',
+      correoElectronico: 'consumidorfinal@gmail.c',
+    },
+  ];
 
-  agregarItem(): void {
-    if (this.productoSeleccionado && this.cantidad > 0) {
-      const item: ItemFactura = new ItemFactura(
-        this.factura?.items.length! + 1 || 1,
-        this.productoSeleccionado,
-        this.cantidad,
-        this.productoSeleccionado.precioUnitario
-      );
 
-      if (this.factura) {
-        this.factura.items.push(item);
+
+  buscarCliente(): void {
+    if (this.cedulaCliente) {
+      const clienteEncontrado = this.buscarClientePorCedula(this.cedulaCliente);
+
+      if (clienteEncontrado) {
+        this.cliente = clienteEncontrado;
+        this.clienteEncontrado = true;
+        this.generarNuevaFactura();
       } else {
-        this.factura = new Factura(
-          1,
-          'F-001',
-          new Date(),
-          new Cliente(1, this.nombreCliente, '', '', '', ''),
-          [item],
-          item.subtotal
-        );
+        this.cliente = new Cliente(0, '', '', '', '', '');
+        this.clienteEncontrado = false;
+        // Aquí puedes mostrar un mensaje de error indicando que el cliente no fue encontrado.
       }
-
-      this.productoSeleccionado = null;
-      this.cantidad = 0;
     }
   }
 
+  generarNuevaFactura(): void {
+    const numeroFactura = this.generarNumeroFactura();
+    const fechaEmision = new Date();
+
+    this.factura = new Factura(
+      1, // Puedes generar un ID único para la factura aquí
+      numeroFactura,
+      fechaEmision,
+      this.cliente,
+      [],
+      0
+    );
+  }
+
+  agregarItem(): void {
+    if (this.productoEncontrado && this.cantidad > 0 && this.factura) {
+      const item: ItemFactura = new ItemFactura(
+        this.factura.items.length + 1,
+        this.productoEncontrado,
+        this.cantidad,
+        this.productoEncontrado.precioUnitario
+      );
+
+      this.factura.items.push(item);
+
+      this.codigoProducto = '';
+      this.cantidad = 0;
+      this.productoEncontrado = null;
+    }
+  }
+
+  buscarProducto(): void {
+    if (this.codigoProducto) {
+      const productoEncontrado = this.buscarProductoPorCodigo(
+        this.codigoProducto
+      );
+
+      if (productoEncontrado) {
+        this.productoEncontrado = productoEncontrado;
+      } else {
+        this.productoEncontrado = null;
+        // Aquí puedes mostrar un mensaje de error indicando que el producto no fue encontrado.
+      }
+    }
+  }
   generarFactura(): void {
     if (this.factura && this.factura.items.length > 0) {
       let total: number = 0;
@@ -90,5 +148,29 @@ export class FacturaComponent {
 
       this.factura.montoTotal = total;
     }
+  }
+
+  buscarClientePorCedula(cedula: string): Cliente | null {
+    // Lógica para buscar el cliente por cédula en tu sistema
+    // Ejemplo de búsqueda estática
+
+    const clienteEncontrado = this.lstClientes.find(
+      (cliente) => cliente.cedula === cedula
+    );
+    return clienteEncontrado || null;
+  }
+
+  buscarProductoPorCodigo(codigo: string): Producto | null {
+    const productoEncontrado = this.lstProductos.find(
+      (producto) => producto.idProducto.toString() === codigo
+    );
+    return productoEncontrado || null;
+  }
+
+  generarNumeroFactura(): string {
+    // Lógica para generar un número de factura único en tu sistema
+    // Ejemplo de generación estática
+    const timestamp = new Date().getTime();
+    return 'F-' + timestamp;
   }
 }
