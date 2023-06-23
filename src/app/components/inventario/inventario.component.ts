@@ -5,7 +5,7 @@ import { Categoria } from 'src/app/models/Categoria';
 @Component({
   selector: 'app-inventario',
   templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.css']
+  styleUrls: ['./inventario.component.css'],
 })
 export class InventarioComponent {
   lstCategorias: Categoria[] = [
@@ -24,6 +24,11 @@ export class InventarioComponent {
       nombre: 'Categoría 3',
       descripcion: 'Descripción de la Categoría 3',
     },
+    {
+      idCategoria: 4,
+      nombre: 'Categoría 4',
+      descripcion: 'Descripción de la Categoría 4',
+    },
   ];
 
   lstProductos: Producto[] = [
@@ -33,7 +38,7 @@ export class InventarioComponent {
       descripcion: 'Descripción del Producto 1',
       categoria: this.lstCategorias[0],
       precioUnitario: 10.99,
-      stock: 10
+      stock: 10,
     },
     {
       idProducto: 2,
@@ -41,7 +46,7 @@ export class InventarioComponent {
       descripcion: 'Descripción del Producto 2',
       categoria: this.lstCategorias[1],
       precioUnitario: 19.99,
-      stock: 5
+      stock: 5,
     },
     {
       idProducto: 3,
@@ -49,7 +54,15 @@ export class InventarioComponent {
       descripcion: 'Descripción del Producto 3',
       categoria: this.lstCategorias[2],
       precioUnitario: 7.99,
-      stock: 15
+      stock: 15,
+    },
+    {
+      idProducto: 4,
+      nombre: 'Producto 4',
+      descripcion: 'Descripción del Producto 4',
+      categoria: this.lstCategorias[1],
+      precioUnitario: 10,
+      stock: 51,
     },
   ];
 
@@ -59,10 +72,17 @@ export class InventarioComponent {
 
   filtrarProductos(): void {
     this.productosFiltrados = this.lstProductos.filter((producto: Producto) => {
-      const cumpleFiltroCategoria = this.categoriaFiltro === '' || producto.categoria.nombre.toLowerCase().includes(this.categoriaFiltro.toLowerCase());
-      const cumpleTerminoBusqueda = this.terminoBusqueda === '' || producto.nombre.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
+      const cumpleFiltroCategoria =
+        this.categoriaFiltro === '' ||
+        producto.categoria.nombre
+          .toLowerCase()
+          .includes(this.categoriaFiltro.toLowerCase());
+      const cumpleTerminoBusqueda =
+        this.terminoBusqueda === '' ||
+        producto.nombre
+          .toLowerCase()
+          .includes(this.terminoBusqueda.toLowerCase());
       return cumpleFiltroCategoria && cumpleTerminoBusqueda;
     });
   }
 }
-

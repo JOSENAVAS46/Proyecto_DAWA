@@ -13,8 +13,8 @@ export class MantenimientoCategoriaComponent {
     // Lógica para buscar la categoría en la base de datos
     this.categoria = {
       idCategoria: 1,
-      nombre: 'Categoría Ejemplo',
-      descripcion: 'Descripción de la categoría',
+      nombre: 'Categoria 1',
+      descripcion: 'Descripción de la categoría 1',
     };
   }
 
