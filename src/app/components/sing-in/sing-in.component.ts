@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Usuario } from '../../models/Usuario';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sing-in',
@@ -51,8 +52,11 @@ export class SingInComponent {
       }
     }
     // Si no se encuentra una coincidencia, mostrar un mensaje de alerta
-    alert('Credenciales inválidas');
-  }
+    Swal.fire({
+      icon: 'error',
+      title: 'Credenciales inválidas',
+      text: 'Las credenciales ingresadas no coinciden o el usuario no esta registrado!',
+    });  }
 
   onRegister() {
     // Validar que se hayan ingresado un correo electrónico, nombre de usuario y contraseña
