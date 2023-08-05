@@ -71,7 +71,7 @@ export class FacturaComponent {
       nombre: 'Consumidor Final',
       direccion: 'Guayaquil',
       telefono: '0999999999',
-      correoElectronico: 'consumidorfinal@gmail.c',
+      correoElectronico: 'consumidorfinal@gmail.com',
     },
   ];
 

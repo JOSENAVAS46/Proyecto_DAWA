@@ -1,5 +1,5 @@
 export class Proveedor {
-  idProveedor: number;
+  id: number;
   codigo: string;
   nombre: string;
   direccion: string;
@@ -7,14 +7,14 @@ export class Proveedor {
   correoElectronico: string;
 
   constructor(
-    _idProveedor: number,
+    _id: number,
     _codigo: string,
     _nombre: string,
     _direccion: string,
     _telefono: string,
     _correoElectronico: string
   ) {
-    this.idProveedor = _idProveedor;
+    this.id = _id;
     this.codigo = _codigo;
     this.nombre = _nombre;
     this.direccion = _direccion;

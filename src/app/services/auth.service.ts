@@ -8,7 +8,7 @@ export class AuthService {
   constructor() { }
 
   loggedIn = false;
-  usuarioActual: Usuario = new Usuario('', '', '', '', '');
+  usuarioActual: Usuario = new Usuario(0,'', '', '', '', '');
 
   login(usuario: Usuario) {
     this.loggedIn = true;
@@ -17,9 +17,8 @@ export class AuthService {
 
   logout() {
     this.loggedIn = false;
-    this.usuarioActual = new Usuario('', '', '', '', '');
+    this.usuarioActual = new Usuario(0,'', '', '', '', '');
     location.reload();
   }
-
 
 }

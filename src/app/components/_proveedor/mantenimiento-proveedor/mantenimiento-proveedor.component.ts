@@ -12,7 +12,7 @@ export class MantenimientoProveedorComponent {
 
   buscarProveedor(): void {
     this.proveedor = {
-      idProveedor: 1,
+      id: 1,
       codigo: 'PROV001',
       nombre: 'Proveedor Ejemplo',
       direccion: 'Dirección Ejemplo',

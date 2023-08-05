@@ -13,6 +13,7 @@ export class SingInComponent {
 
   lstUsuarios: Usuario[] = [
     new Usuario(
+      1,
       'admin',
       'admin',
       'admin.admin@gmail.com',
@@ -20,6 +21,7 @@ export class SingInComponent {
       '_Admin_'
     ),
     new Usuario(
+      2,
       'jnavas',
       'josenavas',
       'jose.navasordonez@gmail.com',
@@ -27,7 +29,7 @@ export class SingInComponent {
       'Navas'
     ),
   ];
-  usuarioActual = new Usuario('', '', '', '', '');
+  usuarioActual = new Usuario(0,'', '', '', '', '');
   username: string = '';
   password: string = '';
   newName: string = '';
@@ -77,6 +79,7 @@ export class SingInComponent {
       } else {
         // Crear una instancia de Usuario con los datos del nuevo usuario
         const nuevoUsuario = new Usuario(
+          0,
           this.newUsername,
           this.newPassword,
           this.newEmail,
