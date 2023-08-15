@@ -58,7 +58,7 @@ export class FacturaComponent {
   ];
   lstClientes: Cliente[] = [
     {
-      idCliente: 1,
+      id: 1,
       cedula: '0924004914',
       nombre: 'Jose Navas',
       direccion: 'Guasmo Sur',
@@ -66,7 +66,7 @@ export class FacturaComponent {
       correoElectronico: 'jose.navasordonez@gmail.com',
     },
     {
-      idCliente: 2,
+      id: 2,
       cedula: '0999999999',
       nombre: 'Consumidor Final',
       direccion: 'Guayaquil',

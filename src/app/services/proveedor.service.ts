@@ -21,5 +21,18 @@ export class ProveedorService {
     }
   }
 
+  async getProveedorByCode(code: string): Promise<Proveedor> {
+    try {
+      const response = await fetch(`${this.apiUrl}/proveedor/codigo/${code}`);
+      const proveedor = await response.json();
+      return proveedor;
+    } catch (error) {
+      console.error('Error obteniendo proveedor:', error);
+      throw error;
+    }
+  }
+
+  
+
   // Resto de los métodos
 }

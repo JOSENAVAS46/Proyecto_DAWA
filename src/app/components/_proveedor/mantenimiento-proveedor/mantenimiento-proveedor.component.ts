@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Proveedor } from 'src/app/models/Proveedor';
+import { ProveedorService } from 'src/app/services/proveedor.service';
 
 @Component({
   selector: 'app-mantenimiento-proveedor',
@@ -10,15 +11,13 @@ export class MantenimientoProveedorComponent {
   proveedor: Proveedor | null = null;
   codigoBusqueda: string = '';
 
-  buscarProveedor(): void {
-    this.proveedor = {
-      id: 1,
-      codigo: 'PROV001',
-      nombre: 'Proveedor Ejemplo',
-      direccion: 'Dirección Ejemplo',
-      telefono: '987654321',
-      correoElectronico: 'proveedor@example.com',
-    };
+  constructor(private proveedorService: ProveedorService) { }
+  async buscarProveedor(): Promise<void> {
+    try {
+      this.proveedor = await this.proveedorService.getProveedorByCode(this.codigoBusqueda);
+    } catch (error) {
+      console.error('Error al obtener Proveedor:', error);
+    }
   }
 
   limpiarBusqueda(): void {
