@@ -1,5 +1,5 @@
 export class Cliente {
-  idCliente: number;
+  id: number;
   cedula: string;
   nombre: string;
   direccion: string;
@@ -7,14 +7,14 @@ export class Cliente {
   correoElectronico: string;
 
   constructor(
-    _idCliente: number,
+    _id: number,
     _cedula: string,
     _nombre: string,
     _direccion: string,
     _telefono: string,
     _correoElectronico: string
   ) {
-    this.idCliente = _idCliente;
+    this.id = _id;
     this.cedula = _cedula;
     this.nombre = _nombre;
     this.direccion = _direccion;

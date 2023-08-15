@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CategoriaService } from 'src/app/services/categoria.service';
 import { Categoria } from 'src/app/models/Categoria';
 
 @Component({
   selector: 'app-listar-categoria',
   templateUrl: './listar-categoria.component.html',
-  styleUrls: ['./listar-categoria.component.css']
+  styleUrls: ['./listar-categoria.component.css'],
 })
-export class ListarCategoriaComponent {
+export class ListarCategoriaComponent implements OnInit {
   lstCategorias: Categoria[] = [];
 
-  constructor() {
-    // Ejemplo de categorías cargadas desde la base de datos
-    this.lstCategorias = [
-      new Categoria(1, 'Electrónicos', 'Productos electrónicos y dispositivos'),
-      new Categoria(2, 'Ropa', 'Ropa y accesorios'),
-      new Categoria(3, 'Hogar', 'Productos para el hogar'),
-      // Agrega más categorías según tus necesidades
-    ];
-  }
+  constructor(private categoriaService: CategoriaService) {}
 
+  async ngOnInit(): Promise<void> {
+    try {
+      this.lstCategorias = await this.categoriaService.getCategorias();
+    } catch (error) {
+      console.error('Error al obtener Categorías:', error);
+    }
+  }
 }

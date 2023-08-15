@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Proveedor } from 'src/app/models/Proveedor';
+import { ProveedorService } from 'src/app/services/proveedor.service';
 
 @Component({
   selector: 'app-mantenimiento-proveedor',
@@ -10,15 +11,13 @@ export class MantenimientoProveedorComponent {
   proveedor: Proveedor | null = null;
   codigoBusqueda: string = '';
 
-  buscarProveedor(): void {
-    this.proveedor = {
-      id: 1,
-      codigo: 'PROV001',
-      nombre: 'Proveedor Ejemplo',
-      direccion: 'Dirección Ejemplo',
-      telefono: '987654321',
-      correoElectronico: 'proveedor@example.com',
-    };
+  constructor(private proveedorService: ProveedorService) { }
+  async buscarProveedor(): Promise<void> {
+    try {
+      this.proveedor = await this.proveedorService.getProveedorByCode(this.codigoBusqueda);
+    } catch (error) {
+      console.error('Error al obtener Proveedor:', error);
+    }
   }
 
   limpiarBusqueda(): void {
@@ -26,22 +25,32 @@ export class MantenimientoProveedorComponent {
     this.codigoBusqueda = '';
   }
 
-  editarProveedor(): void {
-    // Aquí puedes agregar la lógica para editar el proveedor
-    // utilizando this.proveedor para acceder a los valores del proveedor actual
-    // Por ejemplo:
-    // if (this.proveedor) {
-    //   console.log('Editar proveedor:', this.proveedor);
-    // }
+  async editarProveedor(): Promise<void> {
+    try {
+      if (this.proveedor) {
+        const updatedProveedor = await this.proveedorService.updateProveedor(this.proveedor);
+        if (updatedProveedor) {
+          this.proveedor = updatedProveedor; // Actualiza el proveedor con los datos actualizados
+          console.log('Proveedor actualizado:', this.proveedor);
+          this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+        }
+      }
+    } catch (error) {
+      console.error('Error al actualizar el proveedor:', error);
+    }
   }
 
-  eliminarProveedor(): void {
-    // Aquí puedes agregar la lógica para eliminar el proveedor
-    // utilizando this.proveedor para acceder a los valores del proveedor actual
-    // Por ejemplo:
-    // if (this.proveedor) {
-    //   console.log('Eliminar proveedor:', this.proveedor);
-    // }
+  async eliminarProveedor(): Promise<void> {
+    if (this.proveedor) {
+      try {
+        await this.proveedorService.eliminarProveedor(this.proveedor.id);
+        console.log('Proveedor eliminado con éxito.');
+        this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+      } catch (error) {
+        console.error('Error al eliminar proveedor:', error);
+      }
+    }
   }
+  
 
 }

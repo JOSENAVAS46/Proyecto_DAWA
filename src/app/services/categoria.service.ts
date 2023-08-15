@@ -1,0 +1,128 @@
+import { Injectable } from '@angular/core';
+import { Categoria } from '../models/Categoria';
+import { Producto } from '../models/Producto'; // Asegúrate de importar el modelo de Producto
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CategoriaService {
+
+  private apiUrl = 'https://localhost:7230/api'; // Asegúrate de que esta URL sea correcta para las categorías
+
+  constructor() {}
+
+  async getCategorias(): Promise<Categoria[]> {
+    try {
+      const response = await fetch(`${this.apiUrl}/categoria`); // Ajusta la URL para obtener categorías
+      const categorias = await response.json();
+      return categorias;
+    } catch (error) {
+      console.error('Error obteniendo categorías:', error);
+      throw error;
+    }
+  }
+
+  async getCategoriaByCode(code: string): Promise<Categoria> {
+    try {
+      const response = await fetch(`${this.apiUrl}/categoria/codigo/${code}`); // Ajusta la URL para obtener categoría por código
+      const categoria = await response.json();
+      return categoria;
+    } catch (error) {
+      console.error('Error obteniendo categoría:', error);
+      throw error;
+    }
+  }
+  async crearCategoria(categoria: Categoria): Promise<Categoria> {
+    try {
+      const response = await fetch(`${this.apiUrl}/Categoria`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(categoria)
+      });
+  
+      if (response.ok) {
+        const categoriaCreada = await response.json();
+        return categoriaCreada;
+      } else {
+        throw new Error('Error al crear la categoría');
+      }
+    } catch (error) {
+      console.error('Error al crear la categoría:', error);
+      throw error;
+    }
+  }
+  async getCategoriaById(id: number): Promise<Categoria | null> {
+    try {
+      const response = await fetch(`${this.apiUrl}/Categoria/${id}`);
+      if (response.ok) {
+        const categoria = await response.json();
+        return categoria;
+      } else if (response.status === 404) {
+        return null; // Categoría no encontrada
+      } else {
+        throw new Error('Error al obtener la categoría por ID');
+      }
+    } catch (error) {
+      console.error('Error obteniendo categoría por ID:', error);
+      throw error;
+    }
+  }
+
+  async getProductosPorCategoria(categoriaId: number): Promise<Producto[]> {
+    try {
+      const response = await fetch(`${this.apiUrl}/categoria/${categoriaId}/producto`);
+      const productos = await response.json();
+      return productos;
+    } catch (error) {
+      console.error('Error obteniendo productos por categoría:', error);
+      throw error;
+    }
+  }
+
+  async eliminarCategoria(id: number): Promise<string> {
+    try {
+      const response = await fetch(`${this.apiUrl}/Categoria/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        const mensaje = await response.text();
+        return mensaje;
+      } else if (response.status === 404) {
+        throw new Error('Categoría no encontrada');
+      } else {
+        throw new Error('Error al eliminar la categoría');
+      }
+    } catch (error) {
+      console.error('Error al eliminar la categoría:', error);
+      throw error;
+    }
+  }
+  async actualizarCategoria(id: number, categoria: Categoria): Promise<Categoria> {
+    try {
+      const response = await fetch(`${this.apiUrl}/Categoria/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(categoria)
+      });
+
+      if (response.ok) {
+        const updatedCategoria = await response.json();
+        return updatedCategoria;
+      } else if (response.status === 404) {
+        throw new Error('Categoría no encontrada');
+      } else {
+        throw new Error('Error al actualizar la categoría');
+      }
+    } catch (error) {
+      console.error('Error al actualizar la categoría:', error);
+      throw error;
+    }
+  }
+  // Resto de los métodos relacionados con categorías
+}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Cliente } from 'src/app/models/Cliente';
+import { ClienteService } from 'src/app/services/cliente.service';
 @Component({
   selector: 'app-mantenimiento-cliente',
   templateUrl: './mantenimiento-cliente.component.html',
@@ -9,16 +10,14 @@ export class MantenimientoClienteComponent {
   cliente: Cliente | null = null;
   cedulaBusqueda: string = '';
 
-  buscarCliente(): void {
+  constructor(private clienteService: ClienteService) { }
 
-    this.cliente = {
-      idCliente: 1,
-      cedula: '123456789',
-      nombre: 'Cliente Ejemplo',
-      direccion: 'Dirección Ejemplo',
-      telefono: '987654321',
-      correoElectronico: 'cliente@example.com',
-    };
+  async buscarCliente(): Promise<void> {
+    try {
+      this.cliente = await this.clienteService.getClienteByCedula(this.cedulaBusqueda);
+    } catch (error) {
+      console.error('Error al obtener cliente:', error);
+    }
   }
 
   limpiarBusqueda(): void {
@@ -26,11 +25,38 @@ export class MantenimientoClienteComponent {
     this.cedulaBusqueda = '';
   }
 
-  editarCliente(): void {
+ 
 
+
+  async editarCliente(): Promise<void> {
+    if (this.cliente) {
+        try {
+            // Realiza la solicitud al servicio para actualizar el cliente
+            const updatedCliente = await this.clienteService.actualizarCliente(this.cliente);
+
+            if (updatedCliente) {
+                console.log('Cliente actualizado con éxito.');
+                this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+                // Realiza cualquier acción adicional después de actualizar
+            } else {
+                console.log('No se pudo actualizar el cliente.');
+            }
+        } catch (error) {
+            console.error('Error al actualizar cliente:', error);
+        }
+    }
+}
+
+  async eliminarCliente(): Promise<void> {
+    if (this.cliente) {
+      try {
+        await this.clienteService.eliminarCliente(this.cliente.id);
+        console.log('Cliente eliminado con éxito.');
+        this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+      } catch (error) {
+        console.error('Error al eliminar cliente:', error);
+      }
+    }
   }
-
-  eliminarCliente(): void {
-
-  }
+  
 }
