@@ -25,22 +25,32 @@ export class MantenimientoProveedorComponent {
     this.codigoBusqueda = '';
   }
 
-  editarProveedor(): void {
-    // Aquí puedes agregar la lógica para editar el proveedor
-    // utilizando this.proveedor para acceder a los valores del proveedor actual
-    // Por ejemplo:
-    // if (this.proveedor) {
-    //   console.log('Editar proveedor:', this.proveedor);
-    // }
+  async editarProveedor(): Promise<void> {
+    try {
+      if (this.proveedor) {
+        const updatedProveedor = await this.proveedorService.updateProveedor(this.proveedor);
+        if (updatedProveedor) {
+          this.proveedor = updatedProveedor; // Actualiza el proveedor con los datos actualizados
+          console.log('Proveedor actualizado:', this.proveedor);
+          this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+        }
+      }
+    } catch (error) {
+      console.error('Error al actualizar el proveedor:', error);
+    }
   }
 
-  eliminarProveedor(): void {
-    // Aquí puedes agregar la lógica para eliminar el proveedor
-    // utilizando this.proveedor para acceder a los valores del proveedor actual
-    // Por ejemplo:
-    // if (this.proveedor) {
-    //   console.log('Eliminar proveedor:', this.proveedor);
-    // }
+  async eliminarProveedor(): Promise<void> {
+    if (this.proveedor) {
+      try {
+        await this.proveedorService.eliminarProveedor(this.proveedor.id);
+        console.log('Proveedor eliminado con éxito.');
+        this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+      } catch (error) {
+        console.error('Error al eliminar proveedor:', error);
+      }
+    }
   }
+  
 
 }

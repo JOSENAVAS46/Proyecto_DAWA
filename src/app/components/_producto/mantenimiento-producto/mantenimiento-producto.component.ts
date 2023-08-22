@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Producto } from 'src/app/models/Producto';
+import { ProductoService } from 'src/app/services/producto.service';
 
 @Component({
   selector: 'app-mantenimiento-producto',
@@ -10,21 +11,19 @@ export class MantenimientoProductoComponent {
   producto: Producto | null = null;
   idProducto: number = 0;
 
-  buscarProducto(): void {
-    // Simulación de búsqueda de producto por nombre
-    // Aquí podrías implementar la lógica real para buscar el producto en tu base de datos o servicio
-      this.producto = {
-        idProducto: 1,
-        nombre: 'Producto Ejemplo',
-        descripcion: 'Descripción del Producto Ejemplo',
-        categoria: {
-          idCategoria: 1,
-          nombre: 'Categoría Ejemplo',
-          descripcion: 'Descripción de la Categoría Ejemplo',
-        },
-        precioUnitario: 9.99,
-        stock: 10,
-      };
+  constructor(private productoService: ProductoService) {}
+
+  async buscarProducto(): Promise<void> {
+    try {
+      if (this.idProducto > 0) {
+        this.producto = await this.productoService.getProductoById(this.idProducto);
+        console.log('Producto encontrado:', this.producto);
+      } else {
+        console.log('ID de producto no válido.');
+      }
+    } catch (error) {
+      console.error('Error al buscar producto:', error);
+    }
   }
 
   limpiarBusqueda(): void {
@@ -33,12 +32,40 @@ export class MantenimientoProductoComponent {
   }
 
   editarProducto(): void {
-    // Implementa la lógica para editar el producto
-    console.log('Editar producto:', this.producto);
-  }
+    if (this.producto) {
+      try {
+        this.productoService.actualizarProducto(this.producto)
+          .then(updatedProducto => {
+            if (updatedProducto) {
+              console.log('Producto actualizado:', updatedProducto);
+              this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
 
-  eliminarProducto(): void {
-    // Implementa la lógica para eliminar el producto
-    console.log('Eliminar producto:', this.producto);
+              // Puedes agregar acciones adicionales después de editar
+            } else {
+              console.log('No se pudo actualizar el producto.');
+            }
+          })
+          .catch(error => {
+            console.error('Error al editar producto:', error);
+          });
+      } catch (error) {
+        console.error('Error al editar producto:', error);
+      }
+    } else {
+      console.log('No se ha seleccionado ningún producto para editar.');
+    }
+  }
+  async eliminarProducto(): Promise<void> {
+    if (this.producto) {
+      try {
+        await this.productoService.eliminarProducto(this.producto.idProducto);
+        console.log('Producto eliminado con éxito.');
+        this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
+      } catch (error) {
+        console.error('Error al eliminar producto:', error);
+      }
+    } else {
+      console.log('No se ha seleccionado ningún producto para eliminar.');
+    }
   }
 }

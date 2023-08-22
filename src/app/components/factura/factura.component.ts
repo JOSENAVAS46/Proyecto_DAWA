@@ -3,6 +3,8 @@ import { Factura } from 'src/app/models/Factura';
 import { Cliente } from 'src/app/models/Cliente';
 import { Producto } from 'src/app/models/Producto';
 import { ItemFactura } from 'src/app/models/ItemFactura';
+import { ClienteService } from 'src/app/services/cliente.service';
+
 
 @Component({
   selector: 'app-factura',
@@ -10,6 +12,8 @@ import { ItemFactura } from 'src/app/models/ItemFactura';
   styleUrls: ['./factura.component.css'],
 })
 export class FacturaComponent {
+  constructor(private clienteService: ClienteService) { }
+
   factura: Factura | null = null;
   cedulaCliente: string = '';
   cliente: Cliente = new Cliente(0, '', '', '', '', '');
@@ -77,21 +81,14 @@ export class FacturaComponent {
 
 
 
-  buscarCliente(): void {
-    if (this.cedulaCliente) {
-      const clienteEncontrado = this.buscarClientePorCedula(this.cedulaCliente);
-
-      if (clienteEncontrado) {
-        this.cliente = clienteEncontrado;
-        this.clienteEncontrado = true;
-        this.generarNuevaFactura();
-      } else {
-        this.cliente = new Cliente(0, '', '', '', '', '');
-        this.clienteEncontrado = false;
-        // Aquí puedes mostrar un mensaje de error indicando que el cliente no fue encontrado.
-      }
+  async buscarCliente(): Promise<void> {
+    try {
+      this.cliente = await this.clienteService.getClienteByCedula(this.cedulaCliente);
+    } catch (error) {
+      console.error('Error al obtener cliente:', error);
     }
   }
+
 
   generarNuevaFactura(): void {
     const numeroFactura = this.generarNumeroFactura();
