@@ -58,7 +58,7 @@ export class MantenimientoProductoComponent {
   async eliminarProducto(): Promise<void> {
     if (this.producto) {
       try {
-        await this.productoService.eliminarProducto(this.producto.idProducto);
+        await this.productoService.eliminarProducto(this.producto.id);
         console.log('Producto eliminado con éxito.');
         this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
       } catch (error) {

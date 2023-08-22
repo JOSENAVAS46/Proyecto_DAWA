@@ -1,7 +1,7 @@
 import { Categoria } from './Categoria';
 
 export class Producto {
-  idProducto: number;
+  id: number;
   nombre: string;
   descripcion: string;
   categoria: Categoria;
@@ -16,7 +16,7 @@ export class Producto {
     _precioUnitario: number,
     _stock: number
   ) {
-    this.idProducto = _idProducto;
+    this.id = _idProducto;
     this.nombre = _nombre;
     this.descripcion = _descripcion;
     this.categoria = _categoria;

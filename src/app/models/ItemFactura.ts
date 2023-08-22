@@ -1,7 +1,7 @@
 import { Producto } from './Producto';
 
 export class ItemFactura {
-  idItem: number;
+  id: number;
   producto: Producto;
   cantidad: number;
   precioUnitario: number;
@@ -13,7 +13,7 @@ export class ItemFactura {
     _cantidad: number,
     _precioUnitario: number
   ) {
-    this.idItem = _idItem;
+    this.id = _idItem;
     this.producto = _producto;
     this.cantidad = _cantidad;
     this.precioUnitario = this.producto.precioUnitario;

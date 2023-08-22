@@ -58,7 +58,7 @@ export class ProductoService {
   }
   async actualizarProducto(producto: Producto): Promise<Producto | null> {
     try {
-      const response = await fetch(`${this.apiUrl}/Producto/${producto.idProducto}`, {
+      const response = await fetch(`${this.apiUrl}/Producto/${producto.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

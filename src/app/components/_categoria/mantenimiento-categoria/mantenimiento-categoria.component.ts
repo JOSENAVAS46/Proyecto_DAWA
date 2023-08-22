@@ -41,9 +41,9 @@ async buscarCategoria(): Promise<void> {
   }
 
   async editarCategoria(): Promise<void> {
-    if (this.categoria && this.categoria.idCategoria) {
+    if (this.categoria && this.categoria.id) {
       try {
-        const updatedCategoria = await this.categoriaService.actualizarCategoria(this.categoria.idCategoria, this.categoria);
+        const updatedCategoria = await this.categoriaService.actualizarCategoria(this.categoria.id, this.categoria);
         console.log('Categoría actualizada:', updatedCategoria);
         this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
 
@@ -56,9 +56,9 @@ async buscarCategoria(): Promise<void> {
     }
   }
   async eliminarCategoria(): Promise<void> {
-    if (this.categoria && this.categoria.idCategoria) {
+    if (this.categoria && this.categoria.id) {
       try {
-        await this.categoriaService.eliminarCategoria(this.categoria.idCategoria);
+        await this.categoriaService.eliminarCategoria(this.categoria.id);
         console.log('Categoría eliminada');
         this.limpiarBusqueda(); // O cualquier otra acción que desees después de eliminar
 

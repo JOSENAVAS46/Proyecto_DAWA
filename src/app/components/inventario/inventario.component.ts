@@ -43,7 +43,7 @@ export class InventarioComponent {
           categoria.nombre.toLowerCase() === this.categoriaFiltro.toLowerCase()
         );
         if (categoriaSeleccionada) {
-          this.productosFiltrados = await this.productoService.getProductosPorIdCategoria(categoriaSeleccionada.idCategoria);
+          this.productosFiltrados = await this.productoService.getProductosPorIdCategoria(categoriaSeleccionada.id);
         } else {
           this.productosFiltrados = [];
         }

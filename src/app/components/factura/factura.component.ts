@@ -24,11 +24,11 @@ export class FacturaComponent {
   productoEncontrado: Producto | null = null;
   lstProductos: Producto[] = [
     {
-      idProducto: 1,
+      id: 1,
       nombre: 'Producto 1',
       descripcion: 'Descripción del Producto 1',
       categoria: {
-        idCategoria: 1,
+        id: 1,
         nombre: 'Categoría 1',
         descripcion: 'Descripción de la Categoría 1',
       },
@@ -36,11 +36,11 @@ export class FacturaComponent {
       stock: 10,
     },
     {
-      idProducto: 2,
+      id: 2,
       nombre: 'Producto 2',
       descripcion: 'Descripción del Producto 2',
       categoria: {
-        idCategoria: 2,
+        id: 2,
         nombre: 'Categoría 2',
         descripcion: 'Descripción de la Categoría 2',
       },
@@ -48,11 +48,11 @@ export class FacturaComponent {
       stock: 5,
     },
     {
-      idProducto: 3,
+      id: 3,
       nombre: 'Producto 3',
       descripcion: 'Descripción del Producto 3',
       categoria: {
-        idCategoria: 3,
+        id: 3,
         nombre: 'Categoría 3',
         descripcion: 'Descripción de la Categoría 3',
       },
@@ -159,7 +159,7 @@ export class FacturaComponent {
 
   buscarProductoPorCodigo(codigo: string): Producto | null {
     const productoEncontrado = this.lstProductos.find(
-      (producto) => producto.idProducto.toString() === codigo
+      (producto) => producto.id.toString() === codigo
     );
     return productoEncontrado || null;
   }

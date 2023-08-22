@@ -1,5 +1,5 @@
 export class Usuario {
-  idUsuario: number;
+  id: number;
   nombreUsuario: string;
   contraseña: string;
   correoElectronico: string;
@@ -14,7 +14,7 @@ export class Usuario {
     _nombre: string,
     _apellido: string
   ) {
-    this.idUsuario = _idUsuario;
+    this.id = _idUsuario;
     this.nombreUsuario = _nombreUsuario;
     this.contraseña = _contraseña;
     this.correoElectronico = _correoElectronico;

@@ -2,7 +2,7 @@ import { Cliente } from './Cliente';
 import { ItemFactura } from './ItemFactura';
 
 export class Factura {
-  idFactura: number;
+  id: number;
   numeroFactura: string;
   fechaEmision: Date;
   cliente: Cliente;
@@ -10,7 +10,7 @@ export class Factura {
   montoTotal: number;
 
   constructor(_idFactura: number, _numeroFactura: string, _fechaEmision: Date, _cliente: Cliente, _items: ItemFactura[], _montoTotal: number) {
-    this.idFactura = _idFactura;
+    this.id = _idFactura;
     this.numeroFactura = _numeroFactura;
     this.fechaEmision = _fechaEmision;
     this.cliente = _cliente;
