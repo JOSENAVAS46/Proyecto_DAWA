@@ -32,6 +32,7 @@ export class ClienteService {
     }
   }
 
+
   async actualizarCliente(cliente: Cliente): Promise<Cliente | null> {
     try {
         const response = await fetch(`${this.apiUrl}/Cliente/${cliente.id}`, {
@@ -97,4 +98,3 @@ async crearCliente(cliente: Cliente): Promise<Cliente> {
   
 }
   
-}

@@ -32,6 +32,7 @@ export class ProveedorService {
     }
   }
 
+
   async crearProveedor(proveedor: Proveedor): Promise<Proveedor> {
     try {
       const response = await fetch(`${this.apiUrl}/Proveedor`, {
@@ -95,5 +96,6 @@ export class ProveedorService {
     }
   }
   
+
   // Resto de los métodos
 }
