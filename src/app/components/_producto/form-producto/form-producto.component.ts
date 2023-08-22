@@ -17,8 +17,10 @@ export class FormProductoComponent implements OnInit {
     private productoService: ProductoService // Agrega el servicio de productos
   ) {}
   ngOnInit(): void {
-    this.cargarCategorias();
-  }
+    this.cargarCategorias().then(() => {
+      this.producto = new Producto(0, '', '', this.lstCategorias[0], 0, 0);
+    });
+    }
 
   async cargarCategorias(): Promise<void> {
     try {
@@ -28,12 +30,16 @@ export class FormProductoComponent implements OnInit {
     }
   }
 
+  onCategoryChange() {
+    if (this.producto.categoria !== null) {
+      const selectedCategoryObject = this.lstCategorias.find(category => category.id === this.producto.categoria.id);
+      alert('Categoría seleccionada: ' + JSON.stringify(selectedCategoryObject));
+    }
+  }
+
+
   async guardarProducto() {
     try {
-      // obtener el objeto categoria que esta selecionado dentro del componente select y colocarlo  en la propiedad de categoria de producto
-      this.producto.categoria = this.lstCategorias.find(
-        (c) => c.id == this.producto.categoria.id
-      )!;
       console.log(this.producto);
       const productoCreado = await this.productoService.crearProducto(
         this.producto

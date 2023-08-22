@@ -11,8 +11,8 @@
   </div>
   <div class="mb-3">
     <label for="categoria" class="form-label">Categoría:</label>
-    <select id="categoria" [(ngModel)]="producto.categoria" name="categoria" class="form-control" required>
-      <option *ngFor="let categoria of lstCategorias" [value]="categoria">{{ categoria.nombre }}</option>
+    <select id="categoria" [(ngModel)]="producto.categoria" (ngModelChange)="onCategoryChange()" name="categoria" class="form-control" required>
+      <option *ngFor="let categoria of lstCategorias" [value]="categoria.id">{{ categoria.nombre }}</option>
     </select>
   </div>
   <div class="mb-3">
