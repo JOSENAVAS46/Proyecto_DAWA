@@ -9,9 +9,9 @@
 
     <div class="form-group">
         <label for="categoriaFiltro">Filtrar por categoría:</label>
-        <select class="form-control" id="categoriaFiltro" [(ngModel)]="categoriaFiltro" (change)="filtrarProductos()">
+        <select class="form-control" id="categoriaFiltro" [(ngModel)]="categoriaFiltro" (change)="filtrarcategoria()">
             <option value="">Todas las categorías</option>
-            <option *ngFor="let categoria of lstCategorias" [value]="categoria.nombre">{{ categoria.nombre }}</option>
+            <option *ngFor="let categoria of lstCategorias" [value]="categoria.id">{{ categoria.nombre }}</option>
         </select>
     </div>
 

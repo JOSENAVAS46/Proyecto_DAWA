@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Factura } from 'src/app/models/Factura';
 import { Cliente } from 'src/app/models/Cliente';
+import { ProductoResponse } from 'src/app/models/ProductoResponse';
 import { Producto } from 'src/app/models/Producto';
 import { ItemFactura } from 'src/app/models/ItemFactura';
 import { ClienteService } from 'src/app/services/cliente.service';
+import { CategoriaService } from 'src/app/services/categoria.service';
 
 
 @Component({
@@ -12,26 +14,23 @@ import { ClienteService } from 'src/app/services/cliente.service';
   styleUrls: ['./factura.component.css'],
 })
 export class FacturaComponent {
-  constructor(private clienteService: ClienteService) { }
+  constructor(private clienteService: ClienteService,
+    private categoriaService: CategoriaService) { }
 
   factura: Factura | null = null;
   cedulaCliente: string = '';
   cliente: Cliente = new Cliente(0, '', '', '', '', '');
   clienteEncontrado: boolean = false;
-  productoSeleccionado: Producto | null = null;
+  productoSeleccionado: ProductoResponse | null = null;
   cantidad: number = 0;
   codigoProducto: string = '';
   productoEncontrado: Producto | null = null;
-  lstProductos: Producto[] = [
+  lstProductos: ProductoResponse[] = [
     {
       id: 1,
       nombre: 'Producto 1',
       descripcion: 'Descripción del Producto 1',
-      categoria: {
-        id: 1,
-        nombre: 'Categoría 1',
-        descripcion: 'Descripción de la Categoría 1',
-      },
+      categoria: 1,
       precioUnitario: 10.99,
       stock: 10,
     },
@@ -39,11 +38,7 @@ export class FacturaComponent {
       id: 2,
       nombre: 'Producto 2',
       descripcion: 'Descripción del Producto 2',
-      categoria: {
-        id: 2,
-        nombre: 'Categoría 2',
-        descripcion: 'Descripción de la Categoría 2',
-      },
+      categoria: 2,
       precioUnitario: 19.99,
       stock: 5,
     },
@@ -51,11 +46,7 @@ export class FacturaComponent {
       id: 3,
       nombre: 'Producto 3',
       descripcion: 'Descripción del Producto 3',
-      categoria: {
-        id: 3,
-        nombre: 'Categoría 3',
-        descripcion: 'Descripción de la Categoría 3',
-      },
+      categoria: 3,
       precioUnitario: 7.99,
       stock: 15,
     },
@@ -128,7 +119,19 @@ export class FacturaComponent {
       );
 
       if (productoEncontrado) {
-        this.productoEncontrado = productoEncontrado;
+        //igualar los productos atributo por atributoi
+        this.productoEncontrado!.id = productoEncontrado.id;
+        this.productoEncontrado!.nombre = productoEncontrado.nombre;
+        this.productoEncontrado!.descripcion = productoEncontrado.descripcion;
+        this.categoriaService.getCategoriaById(productoEncontrado.categoria)
+        .then(categoria => {
+          this.productoEncontrado!.categoria = categoria;
+        })
+        .catch(error => {
+          console.error('Error obteniendo categoría:', error);
+        });
+        this.productoEncontrado!.precioUnitario = productoEncontrado.precioUnitario;
+        this.productoEncontrado!.stock = productoEncontrado.stock;
       } else {
         this.productoEncontrado = null;
         // Aquí puedes mostrar un mensaje de error indicando que el producto no fue encontrado.
@@ -157,7 +160,7 @@ export class FacturaComponent {
     return clienteEncontrado || null;
   }
 
-  buscarProductoPorCodigo(codigo: string): Producto | null {
+  buscarProductoPorCodigo(codigo: string): ProductoResponse | null {
     const productoEncontrado = this.lstProductos.find(
       (producto) => producto.id.toString() === codigo
     );
@@ -170,4 +173,15 @@ export class FacturaComponent {
     const timestamp = new Date().getTime();
     return 'F-' + timestamp;
   }
+
+  async obtenerCategoriaPorId(idCategoria: number): Promise<string> {
+    var categoria = "";
+    try {
+      categoria = (await this.categoriaService.getCategoriaById(idCategoria))?.nombre!
+    } catch (error) {
+      console.error('Error al obtener categoría por id:', error);
+    }
+    return categoria;
+  }
+
 }

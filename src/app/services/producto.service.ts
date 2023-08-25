@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Producto } from '../models/Producto';
+import { ProductoResponse } from '../models/ProductoResponse';
+import { CategoriaService } from './categoria.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -8,20 +11,40 @@ export class ProductoService {
 
   private apiUrl = 'https://localhost:7230/api';
 
-  constructor() {}
+  constructor(
+    private categoriaService: CategoriaService
+  ) {}
 
   async getProductos(): Promise<Producto[]> {
     try {
       const response = await fetch(`${this.apiUrl}/producto`);
-      const productos = await response.json();
+      const productosData = await response.json();
+      const productos: Producto[] = [];
+  
+      for (const productoData of productosData) {
+        const categoriaById = await this.categoriaService.getCategoriaById(productoData.categoria);
+        
+        const producto: Producto = {
+          id: productoData.id,
+          nombre: productoData.nombre,
+          descripcion: productoData.descripcion,
+          categoria: categoriaById,
+          precioUnitario: productoData.precioUnitario,
+          stock: productoData.stock,
+        };
+        
+        productos.push(producto);
+      }
+  
       return productos;
     } catch (error) {
       console.error('Error obteniendo productos:', error);
       throw error;
     }
   }
+  
 
-  async getProductoByCode(code: string): Promise<Producto> {
+  async getProductoByCode(code: string): Promise<ProductoResponse> {
     try {
       const response = await fetch(`${this.apiUrl}/producto/codigo/${code}`);
       const producto = await response.json();
@@ -32,7 +55,7 @@ export class ProductoService {
     }
   }
 
-  async getProductosByCategoria(categoria: string): Promise<Producto[]> {
+  async getProductosByCategoria(categoria: string): Promise<ProductoResponse[]> {
     try {
       const response = await fetch(`${this.apiUrl}/producto/categoria/${categoria}`);
       const productos = await response.json();
@@ -42,7 +65,7 @@ export class ProductoService {
       throw error;
     }
   }
-  async getProductoById(id: number): Promise<Producto | null> {
+  async getProductoById(id: number): Promise<ProductoResponse | null> {
     try {
       const response = await fetch(`${this.apiUrl}/Producto/${id}`);
       if (response.ok) {
@@ -56,7 +79,7 @@ export class ProductoService {
       throw error;
     }
   }
-  async actualizarProducto(producto: Producto): Promise<Producto | null> {
+  async actualizarProducto(producto: ProductoResponse): Promise<ProductoResponse | null> {
     try {
       const response = await fetch(`${this.apiUrl}/Producto/${producto.id}`, {
         method: 'PUT',
@@ -93,32 +116,50 @@ export class ProductoService {
       throw error;
     }
   }
-  async filtrarProductos(terminoBusqueda: string, categoriaFiltro: string): Promise<Producto[]> {
-  try {
-    const productos = await this.getProductos(); // Obtiene todos los productos
-    const productosFiltrados = productos.filter((producto: Producto) => {
-      const cumpleFiltroCategoria =
-        categoriaFiltro === '' || producto.categoria.nombre.toLowerCase().includes(categoriaFiltro.toLowerCase());
-      const cumpleTerminoBusqueda =
-        terminoBusqueda === '' || producto.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase());
-      return cumpleFiltroCategoria && cumpleTerminoBusqueda;
-    });
-    return productosFiltrados;
-  } catch (error) {
-    console.error('Error al filtrar productos:', error);
-    throw error;
+
+  async filtrarProductos(terminoBusqueda: string): Promise<Producto[]> {
+    try {
+      const productos = await this.getProductos(); // Obtiene todos los productos
+      const productosFiltrados = productos.filter((producto: Producto) => {
+        const cumpleTerminoBusqueda =
+          terminoBusqueda === '' || producto.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase());
+        return cumpleTerminoBusqueda;
+      });
+      return productosFiltrados;
+    } catch (error) {
+      console.error('Error al filtrar productos:', error);
+      throw error;
+    }
   }
-}
-async getProductosPorIdCategoria(idCategoria: number): Promise<Producto[]> {
-  try {
-    const response = await fetch(`${this.apiUrl}/producto/categoria/${idCategoria}`);
-    const productos = await response.json();
-    return productos;
-  } catch (error) {
-    console.error('Error obteniendo productos por ID de categoría:', error);
-    throw error;
+
+  async getProductosPorIdCategoria(idCategoria: number): Promise<Producto[]> {
+    try {
+      const response = await fetch(`${this.apiUrl}/producto/categoria/${idCategoria}`);
+      const productosData = await response.json();
+      const productos: Producto[] = [];
+  
+      for (const productoData of productosData) {
+        const categoriaById = await this.categoriaService.getCategoriaById(productoData.categoria);
+        
+        const producto: Producto = {
+          id: productoData.id,
+          nombre: productoData.nombre,
+          descripcion: productoData.descripcion,
+          categoria: categoriaById,
+          precioUnitario: productoData.precioUnitario,
+          stock: productoData.stock,
+        };
+        
+        productos.push(producto);
+      }
+  
+      return productos;
+    } catch (error) {
+      console.error('Error obteniendo productos por ID de categoría:', error);
+      throw error;
+    }
   }
-}
+  
 async crearProducto(producto: Producto): Promise<Producto | null> {
   try {
     const response = await fetch(`${this.apiUrl}/Producto`, {

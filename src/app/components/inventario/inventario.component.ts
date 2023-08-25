@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Producto } from 'src/app/models/Producto';
+import { ProductoResponse } from 'src/app/models/ProductoResponse';
 import { Categoria } from 'src/app/models/Categoria';
 import { ProductoService } from 'src/app/services/producto.service';
 import { CategoriaService } from 'src/app/services/categoria.service';
@@ -12,8 +13,9 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 export class InventarioComponent {
   lstCategorias: Categoria[] = [];
   productosFiltrados: Producto[] = [];
+  CategoriaFiltros: Categoria[] = [];
   terminoBusqueda: string = '';
-  categoriaFiltro: string = '';
+  categoriaFiltro: number = 0;
 
   constructor(
     private productoService: ProductoService,
@@ -32,25 +34,39 @@ export class InventarioComponent {
   async filtrarProductos(): Promise<void> {
     try {
       // Filtrar productos por término de búsqueda
-      this.productosFiltrados = await this.productoService.filtrarProductos(
-        this.terminoBusqueda,
-        ''
-      );
-  
-      // Si se seleccionó una categoría, filtrar los productos por esa categoría
-      if (this.categoriaFiltro) {
-        const categoriaSeleccionada = this.lstCategorias.find(categoria =>
-          categoria.nombre.toLowerCase() === this.categoriaFiltro.toLowerCase()
-        );
-        if (categoriaSeleccionada) {
-          this.productosFiltrados = await this.productoService.getProductosPorIdCategoria(categoriaSeleccionada.id);
-        } else {
-          this.productosFiltrados = [];
-        }
-      }
+      this.productosFiltrados = await this.productoService.filtrarProductos(this.terminoBusqueda);
+      console.log(JSON.stringify(this.productosFiltrados));
     } catch (error) {
       console.error('Error al filtrar productos:', error);
     }
   }
+
+  async filtrarcategoria(): Promise<void> {
+    try {
+      if (this.categoriaFiltro) {
+          const idCategoria = this.categoriaFiltro;
+          this.productosFiltrados = await this.productoService.getProductosPorIdCategoria(idCategoria);
+          console.log(this.productosFiltrados);
+      } else {
+        // Mostrar todas las categorías si no hay filtro
+        this.CategoriaFiltros = this.lstCategorias;
+        this.productosFiltrados = await this.productoService.filtrarProductos('');
+      }
+    } catch (error) {
+      console.error('Error al filtrar categorías:', error);
+    }
+  }
+
+  async obtenerCategoriaPorId(idCategoria: number): Promise<string> {
+    var categoria = "";
+    try {
+      categoria = (await this.categoriaService.getCategoriaById(idCategoria))?.nombre!
+    } catch (error) {
+      console.error('Error al obtener categoría por id:', error);
+    }
+    console.log(categoria);
+    return categoria;
+  }
+
   
 }

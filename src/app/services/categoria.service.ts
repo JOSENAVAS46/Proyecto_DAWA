@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Categoria } from '../models/Categoria';
-import { Producto } from '../models/Producto'; // Asegúrate de importar el modelo de Producto
+import { ProductoResponse } from '../models/ProductoResponse'; // Asegúrate de importar el modelo de Producto
 
 
 @Injectable({
@@ -23,16 +23,6 @@ export class CategoriaService {
     }
   }
 
-  async getCategoriaByCode(code: string): Promise<Categoria> {
-    try {
-      const response = await fetch(`${this.apiUrl}/categoria/codigo/${code}`); // Ajusta la URL para obtener categoría por código
-      const categoria = await response.json();
-      return categoria;
-    } catch (error) {
-      console.error('Error obteniendo categoría:', error);
-      throw error;
-    }
-  }
   async crearCategoria(categoria: Categoria): Promise<Categoria> {
     try {
       const response = await fetch(`${this.apiUrl}/Categoria`, {
@@ -54,14 +44,30 @@ export class CategoriaService {
       throw error;
     }
   }
-  async getCategoriaById(id: number): Promise<Categoria | null> {
+
+  async obtenerNombreCategoriaPorId(idCategoria: number): Promise<string> {
+    var categoria = "";
+    try {
+      categoria = (await this.getCategoriaById(idCategoria))?.nombre!
+    } catch (error) {
+      console.error('Error al obtener categoría por id:', error);
+    }
+    return categoria;
+  }
+
+
+  async getCategoriaById(id: number): Promise<Categoria> {
     try {
       const response = await fetch(`${this.apiUrl}/Categoria/${id}`);
       if (response.ok) {
-        const categoria = await response.json();
+        const categoriaData = await response.json();
+        const categoria: Categoria = {
+          id: categoriaData.id,
+          nombre: categoriaData.nombre,
+          descripcion: categoriaData.descripcion
+          // Agrega aquí todas las propiedades de la categoría
+        };
         return categoria;
-      } else if (response.status === 404) {
-        return null; // Categoría no encontrada
       } else {
         throw new Error('Error al obtener la categoría por ID');
       }
@@ -71,9 +77,10 @@ export class CategoriaService {
     }
   }
 
-  async getProductosPorCategoria(categoriaId: number): Promise<Producto[]> {
+
+  async getProductosPorCategoria(categoriaId: number): Promise<ProductoResponse[]> {
     try {
-      const response = await fetch(`${this.apiUrl}/categoria/${categoriaId}/producto`);
+      const response = await fetch(`${this.apiUrl}/Producto/categoria/${categoriaId}`);
       const productos = await response.json();
       return productos;
     } catch (error) {

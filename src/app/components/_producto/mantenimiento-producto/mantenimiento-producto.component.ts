@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Producto } from 'src/app/models/Producto';
+import { ProductoResponse } from 'src/app/models/ProductoResponse';
 import { ProductoService } from 'src/app/services/producto.service';
+import { CategoriaService } from 'src/app/services/categoria.service';
 
 @Component({
   selector: 'app-mantenimiento-producto',
@@ -8,10 +9,11 @@ import { ProductoService } from 'src/app/services/producto.service';
   styleUrls: ['./mantenimiento-producto.component.css'],
 })
 export class MantenimientoProductoComponent {
-  producto: Producto | null = null;
+  producto: ProductoResponse | null = null;
   idProducto: number = 0;
 
-  constructor(private productoService: ProductoService) {}
+  constructor(private productoService: ProductoService, 
+    private categoriaService: CategoriaService) {}
 
   async buscarProducto(): Promise<void> {
     try {
@@ -68,4 +70,15 @@ export class MantenimientoProductoComponent {
       console.log('No se ha seleccionado ningún producto para eliminar.');
     }
   }
+
+    async obtenerCategoriaPorId(idCategoria: number): Promise<string> {
+    var categoria = "";
+    try {
+      categoria = (await this.categoriaService.getCategoriaById(idCategoria))?.nombre!
+    } catch (error) {
+      console.error('Error al obtener categoría por id:', error);
+    }
+    return categoria;
+  }
+
 }

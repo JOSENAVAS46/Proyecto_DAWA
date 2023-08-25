@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
+import { CategoriaService } from 'src/app/services/categoria.service';
 import { Producto } from 'src/app/models/Producto';
+import { ProductoResponse } from 'src/app/models/ProductoResponse';
 
 @Component({
   selector: 'app-listar-producto',
@@ -10,7 +12,8 @@ import { Producto } from 'src/app/models/Producto';
 export class ListarProductoComponent implements OnInit {
   lstProductos: Producto[] = [];
 
-  constructor(private productoService: ProductoService) {}
+  constructor(private productoService: ProductoService,
+    private categoriaService: CategoriaService) {}
 
   async ngOnInit(): Promise<void> {
     try {
@@ -19,4 +22,7 @@ export class ListarProductoComponent implements OnInit {
       console.error('Error al obtener Productos:', error);
     }
   }
+
+  
+
 }
